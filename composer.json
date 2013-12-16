@@ -9,6 +9,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-
+        "phpunit/phpunit": "3.7.*@dev",
+        "phpunit/phpunit-mock-objects": "1.2.3"
     }
 }
