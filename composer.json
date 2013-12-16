@@ -1,0 +1,14 @@
+{
+    "name": "smartphonne/pattern",
+    "description": "Enquadar o padr&atilde;o mvc dentro c&oacute;digo",
+    "authors": [
+        {
+            "name": "David Willian",
+            "email": "davidcbsi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    }
+}
