@@ -24,8 +24,8 @@ class RouterTest extends PHPunit
 	public function testInstanceOfRouter()
 	{
 		$this->assertInstanceOf('bootstrap\Router',$this->router,
-					'It inst type of '.get_class($this->router)
-				);
+				'It inst type of '.get_class($this->router)
+			);
 	}
 
 	/**
@@ -35,19 +35,19 @@ class RouterTest extends PHPunit
 	*/
 	public function testListenerWithoutRequestValues()
 	{
+		$this->assertTrue($this->router->listener());		
+	}
+
+	/**
+	*@depends testListenerWithoutRequestValues
+	*@expectedException Exception
+	*@expectedExceptionMessage File not exists
+	*/
+	public function testListenerWithRequestValues()
+	{
 		$_REQUEST['controller'] = '';
 		$_REQUEST['action'] = '';
 
-		$this->assertTrue($this->router->listener());		
+		$this->assertTrue($this->router->listener());				
 	}
-}
-
-
-
-
-
-
-
-
-
-?>
+}?>
