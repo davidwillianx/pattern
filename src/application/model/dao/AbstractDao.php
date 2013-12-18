@@ -40,7 +40,7 @@
 		public function prepare($sql = null)
 		{
 			try {
-					$this->setStatement($this->getConnection()->prepare($sql));
+					$this->setStatement($this->getConnection()->prepare($this->sql));
 					$this->indexParam = 0;
 					return true;
 			} catch (PDOException $error) {
@@ -51,8 +51,24 @@
 		public function bindParam($dataFetch,$typeAttribute = null)
 		{
 			if($dataFetch)
-				return $this->getSteatement()->bindParam(++$this->indexParam,$dataFetch,$typeAttribute);
+				return $this->getStatement()->bindParam(++$this->indexParam,$dataFetch,$typeAttribute);
 			else throw new \InvalidArgumentException("First argument cannot be null");
+		}
+
+		public function execute()
+		{
+			return $this->getStatement()->execute();
+		}
+
+		public function executeLastId()
+		{
+			if($this->execute())
+				return $this->pdoConnection->lastInsertId();
+		}
+
+		public function fetch($patter = null)
+		{
+			 return $this->getStatement()->fetch($patter);			
 		}
 
 		private function setStatement($pdoStatement)
@@ -60,7 +76,7 @@
 			$this->pdoStatement = $pdoStatement;
 		}
 
-		private function getSteatement()
+		private function getStatement()
 		{
 			return $this->pdoStatement;
 		}

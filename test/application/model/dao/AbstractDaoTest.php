@@ -67,10 +67,10 @@
 				);
 		}
 
+		
 		public function testBindParamShouldWork()
 		{
-			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
-			$this->abstractDao->prepare();
+			$this->prepareQuery();
 			$this->assertTrue($this->abstractDao->bindParam(1, PDO::PARAM_INT),
 				'Param associated is not a type defined or is not an element valid');
 		}
@@ -80,9 +80,77 @@
 		*@expectedExceptionMessage First argument cannot be null
 		*/
 		public function testBindParamShouldNotWork()
-		{
-			$this->abstractDao->sql = 'SELECT * FROM user id = ?';
-			$this->abstractDao->prepare();
+		{	
+			$this->prepareQuery();
 			$this->abstractDao->bindParam(null);
+		}
+
+
+		public function testExecuteLastId()
+		{
+			$this->abstractDao->sql = 'INSERT INTO user (nome,email)
+										VALUES("Estroncio","e@hotmailcom")';
+			$this->abstractDao->prepare();
+			$id = $this->abstractDao->executeLastId();
+			$this->assertEquals(1,$id);
+		}
+
+		/**
+		*@depends testExecuteLastId
+		*/
+		public function testExecute()
+		{
+			$this->prepareQuery();
+			$this->abstractDao->bindParam(1,PDO::PARAM_INT);
+			$this->assertTrue($this->abstractDao->execute());
+		}
+
+		
+		/**
+		*@depends testExecute
+		*/
+		public function testFetch()
+		{
+			$id = 1;
+			$this->executeFromFetch($id);
+			$this->assertCount(3,$this->abstractDao->fetch(PDO::FETCH_ASSOC),
+					'Expected 1 element(s)'
+				);
+		}
+
+		/**
+		*@depends testFetch
+		*/
+		public function testFetchNotFoundResult()
+		{
+			$id = 2;
+			$this->executeFromFetch($id);
+			$this->assertFalse($this->abstractDao->fetch(PDO::FETCH_ASSOC),
+					'Unexpected elements found from this sentence'
+				);
+		}
+     
+		/*public function testFetchFromClassPatter()
+		{
+			$id = 1;
+			$this->executeFromFetch($id);
+			$this->assertInstanceOf('stdClass',$this->abstractDao->fetch(PDO::FETCH_CLASS));
+		}*/
+
+		private function prepareQuery()
+		{
+			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
+			$this->abstractDao->prepare();
+		}
+
+		/**
+		*@depends prepareQuery
+		*/
+		private function executeFromFetch($id)
+		{
+			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
+			$this->abstractDao->prepare();
+			$this->abstractDao->bindParam($id,PDO::PARAM_INT);
+			$this->abstractDao->execute();
 		}
 	}?>
