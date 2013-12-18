@@ -69,5 +69,4 @@ class Router
 				. 'controller'. self::DS
 				. $this->fileName;
 	}
-
 }?>

@@ -7,5 +7,8 @@
 	define('ds', DIRECTORY_SEPARATOR);
 	$path = dirname(dirname(__FILE__));
 
-	$autoloadPath = $path.ds.'vendor'.ds.'autload.php';
+	$autoloadPath = $path.ds.'vendor'.ds.'autoload.php';
+
+	if(!@require_once($autoloadPath))
+		echo 'Autoload path incorrect or vendor not found, plz install compser';
 ?>

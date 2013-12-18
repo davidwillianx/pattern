@@ -9,9 +9,9 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         verbose="false">
+         verbose="true">
 	<testsuites name="PHPunit">
-		<directory>tests/application</directory>
+		<directory>test/application</directory>
 	</testsuites>
 	<filter>
 		<whitelist>

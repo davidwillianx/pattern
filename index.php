@@ -4,5 +4,4 @@
 	use bootstrap\Router;
 
 	new Router();
-
 ?>
