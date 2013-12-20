@@ -71,7 +71,7 @@
 		public function testBindParamShouldWork()
 		{
 			$this->prepareQuery();
-			$this->assertTrue($this->abstractDao->bindParam(1, PDO::PARAM_INT),
+			$this->assertTrue($this->abstractDao->bindParam(1, \PDO::PARAM_INT),
 				'Param associated is not a type defined or is not an element valid');
 		}
 
@@ -88,11 +88,13 @@
 
 		public function testExecuteLastId()
 		{
+			$userRow = $this->checkLastInserted();
+			$lastId = $userRow['id'];
 			$this->abstractDao->sql = 'INSERT INTO user (nome,email)
 										VALUES("Estroncio","e@hotmailcom")';
 			$this->abstractDao->prepare();
-			$id = $this->abstractDao->executeLastId();
-			$this->assertEquals(1,$id);
+			$idInsert = $this->abstractDao->executeLastId();
+			$this->assertEquals(++$lastId,$idInsert);
 		}
 
 		/**
@@ -101,7 +103,7 @@
 		public function testExecute()
 		{
 			$this->prepareQuery();
-			$this->abstractDao->bindParam(1,PDO::PARAM_INT);
+			$this->abstractDao->bindParam(1,\PDO::PARAM_INT);
 			$this->assertTrue($this->abstractDao->execute());
 		}
 
@@ -113,7 +115,7 @@
 		{
 			$id = 1;
 			$this->executeFromFetch($id);
-			$this->assertCount(3,$this->abstractDao->fetch(PDO::FETCH_ASSOC),
+			$this->assertCount(3,$this->abstractDao->fetch(\PDO::FETCH_ASSOC),
 					'Expected 1 element(s)'
 				);
 		}
@@ -123,11 +125,26 @@
 		*/
 		public function testFetchNotFoundResult()
 		{
-			$id = 2;
-			$this->executeFromFetch($id);
-			$this->assertFalse($this->abstractDao->fetch(PDO::FETCH_ASSOC),
+			$userRow = $this->checkLastInserted();
+			$lastId = $userRow['id'];
+			$this->executeFromFetch(++$lastId);
+			$this->assertFalse($this->abstractDao->fetch(\PDO::FETCH_ASSOC),
 					'Unexpected elements found from this sentence'
 				);
+		}
+
+		/**
+		*@depends testFetchNotFoundResult
+		*/
+		public function testFetchAll()
+		{
+			$quatityRows = $this->countRowsUserTable();
+			$this->abstractDao->sql = 'SELECT * FROM user';
+			$this->abstractDao->prepare();
+			$this->abstractDao->execute();
+
+			$this->assertCount((int)$quatityRows['quantidade'],$this->abstractDao->fetchAll(),
+				'Number rows fetched <someError>');
 		}
      
 		/*public function testFetchFromClassPatter()
@@ -143,14 +160,28 @@
 			$this->abstractDao->prepare();
 		}
 
-		/**
-		*@depends prepareQuery
-		*/
+		
 		private function executeFromFetch($id)
 		{
 			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
 			$this->abstractDao->prepare();
-			$this->abstractDao->bindParam($id,PDO::PARAM_INT);
+			$this->abstractDao->bindParam($id,\PDO::PARAM_INT);
 			$this->abstractDao->execute();
+		}
+
+		private function checkLastInserted()
+		{
+			$this->abstractDao->sql = 'SELECT MAX(id) as id FROM user';
+			$this->abstractDao->prepare();
+			$this->abstractDao->execute();
+			return $this->abstractDao->fetch(\PDO::FETCH_ASSOC);
+		}
+
+		private function countRowsUserTable()
+		{
+			$this->abstractDao->sql = 'SELECT COUNT(id) quantidade FROM user';
+			$this->abstractDao->prepare();
+			$this->abstractDao->execute();
+			return $this->abstractDao->fetch(\PDO::FETCH_ASSOC);
 		}
 	}?>

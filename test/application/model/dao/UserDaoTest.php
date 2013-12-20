@@ -20,9 +20,44 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
 
   	public function testIsInstanceOfUserDao()
   	{
-  		$this->assertInstanceOf('UserDao',$this->userDao,
+  		$this->assertInstanceOf('application\model\dao\UserDao',$this->userDao,
   				'Something wrong in your class file or in your path'
   			);
   	}
 
+  	public function testSelectAll()
+  	{
+  		$quantityRows = $this->countRowsUserTable();
+   		$this->assertCount($quantityRows,$this->userDao->selectAll(),
+  			'Unexpected number of responses'
+  		);
+  	}
+
+  	/**
+  	*@depends testSelectAll
+  	*/
+	/*public function testSelectById()
+	{
+
+		
+		$userMock = $this->getMock('stdClass');
+		$userMock->expects($this->any())
+				 ->method('getId')
+				 ->will($this->returnValue(1));
+
+		$userRow = $this->userDao->selectById($userMock);
+		$this->assertCount(1,$userRow,
+				'unexpected number of values'
+			);
+		$this->assertTrue(1,$user->getId());
+	}*/
+
+	private function countRowsUserTable()
+	{
+		$this->userDao->sql = 'SELECT COUNT(id) quantidade FROM user';
+		$this->userDao->prepare();
+		$this->userDao->execute();
+		$quantity =  $this->userDao->fetch(\PDO::FETCH_ASSOC);
+		return (int) $quantity['quantidade'];
+	}
 }?>

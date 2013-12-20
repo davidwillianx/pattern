@@ -9,7 +9,7 @@
 		private $pdoStatement;
 		private $indexParam;
 		private $dataConnection = array(
-							'dns' => 'mysql:dbname=contecom;host=localhost'
+							'dns' => 'mysql:dbname=contecomtest;host=localhost'
 							,'user'=>'root'
 							,'passwd'=>'');
 		
@@ -69,6 +69,11 @@
 		public function fetch($patter = null)
 		{
 			 return $this->getStatement()->fetch($patter);			
+		}
+
+		public function fetchAll($patter = null)
+		{
+			return $this->getStatement()->fetchAll($patter);
 		}
 
 		private function setStatement($pdoStatement)
