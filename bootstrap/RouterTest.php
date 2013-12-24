@@ -30,18 +30,14 @@ class RouterTest extends PHPunit
 
 	/**
 	*@depends testInstanceOfRouter
-	*@expectedException Exception
-	*@expectedExceptionMessage File not exists
 	*/
 	public function testListenerWithoutRequestValues()
 	{
-		$this->assertTrue($this->router->listener());		
+		$this->router->listener();		
 	}
 
 	/**
 	*@depends testListenerWithoutRequestValues
-	*@expectedException Exception
-	*@expectedExceptionMessage File not exists
 	*/
 	public function testListenerWithRequestValues()
 	{
@@ -50,4 +46,17 @@ class RouterTest extends PHPunit
 
 		$this->assertTrue($this->router->listener());				
 	}
+
+	/**
+	*@depends testListenerWithRequestValues
+	*@expectedException Exception
+	*/
+	public function testListenerDoesntWork()
+	{
+		$_REQUEST['controller'] = 'FF';
+		$_REQUEST['action'] = 'xxx';
+
+		$this->assertTrue($this->router->listener());				
+	}
+
 }?>

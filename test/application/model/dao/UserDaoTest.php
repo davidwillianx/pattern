@@ -1,12 +1,13 @@
 <?php 
 
 use application\model\dao\UserDao;
+use application\model\entity\User;
 
 class UserDaoTest extends \PHPUnit_Framework_TestCase
 {
 	private $userDao;
 
-	public function assertPreconditions()
+	public function assertPreConditions()
 	{
 		$this->assertTrue($file = class_exists('application\model\dao\UserDao'),
 				'File not found '.$file
@@ -36,21 +37,20 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
   	/**
   	*@depends testSelectAll
   	*/
-	/*public function testSelectById()
+	public function testSelectById()
 	{
-
-		
-		$userMock = $this->getMock('stdClass');
+		/*$userMock = $this->getMock('application\mode\entity\User');
 		$userMock->expects($this->any())
 				 ->method('getId')
-				 ->will($this->returnValue(1));
+				 ->will($this->returnValue(1));*/
+		$user = new User();
+		$user->setId(1);
 
-		$userRow = $this->userDao->selectById($userMock);
-		$this->assertCount(1,$userRow,
+		$userRow = $this->userDao->selectById($user);
+		$this->assertCount(3,$userRow,
 				'unexpected number of values'
 			);
-		$this->assertTrue(1,$user->getId());
-	}*/
+	}
 
 	private function countRowsUserTable()
 	{

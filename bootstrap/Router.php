@@ -2,12 +2,14 @@
 
 namespace bootstrap;
 
+use application\controller;
+
 class Router
 {
 	const DS  = DIRECTORY_SEPARATOR;
 	
 	private $pathFile;
-	private $fileInstance;
+	public $fileInstance;
 	private $fileName;
 
 	private $dataRequest = array(
@@ -34,10 +36,11 @@ class Router
 		{
 			$this->fileName = 'Controller'.ucwords($this->dataRequest['controller']);
 			$this->pathFile = $this->buildFilePath();
-
+			
 			$this->loadController();
+			return true;	
 
-		}else throw new Exception("Error Processing Request");
+		}else throw new Exception("File not exists");
 	}
 
 	/**@TODO verificar o uso do atributo transac*/
@@ -45,28 +48,33 @@ class Router
 	{
 		if(file_exists($this->pathFile))
 		{
-			require_once($file);
-			$this->fileInstance = new \ReflectionClass($this->$fileName);
-			$this->fileInstance = $this->fileInstance->newInstance();
+			require_once($this->pathFile);
+			try{
+				$this->fileInstance = new \ReflectionClass('application\controller\\'.$this->fileName);
+				$this->fileInstance = $this->fileInstance->newInstance();
 
-			$reflectionMethod = new \ReflectionMethod($this->fileInstance,$this->dataRequest['action']);
-			$reflectionMethod->invokeArgs($this->fileInstance,$this->trasac);
-
-			//return true;	
+				$reflectionMethod = new \ReflectionMethod($this->fileInstance,$this->dataRequest['action']);
+				$reflectionMethod->invokeArgs($this->fileInstance,array($this->trasac));
+			}catch(\ReflectionException $error){
+				echo 'falha de reflexao';
+			}
+			
 		}else throw new \Exception("File not exists");				
 	}
 
 	private function getDataRequest()
 	{
+
 		$this->dataRequest['controller'] = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : 'index';
-		$this->dataRequest['action'] = !empty($_REQUEST['action']) ? $_REQUEST['action'] : 'index';
+		$this->dataRequest['action'] = !empty($_REQUEST['action']) ? $_REQUEST['action'] : 'index';	
 	}
 
 	private function buildFilePath()
 	{
 		return 	dirname(dirname(__FILE__))
 				. self::DS.'src'. self::DS
+				.'application'.self::DS
 				. 'controller'. self::DS
-				. $this->fileName;
+				. $this->fileName.'.php';
 	}
 }?>
