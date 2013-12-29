@@ -29,7 +29,6 @@ class Router
 	negativas da requisição (arquivo invalido / method invalid)*/
 	public function listener()
 	{
-		
 		$this->getDataRequest();
 
 		if(!empty($this->dataRequest['controller']) && !empty($this->dataRequest['action']))
@@ -44,6 +43,8 @@ class Router
 	}
 
 	/**@TODO verificar o uso do atributo transac*/
+	/**@TODO Ao invocar o controllerResponsavel pela requisição inserir 
+	*	como parametro a instancia de request*/
 	private function loadController()
 	{
 		if(file_exists($this->pathFile))

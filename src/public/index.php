@@ -1,6 +1,8 @@
 <?php
-	require_once '../../bootstrap/bootstrap.php';
-	require_once '../../bootstrap/Router.php';
+
+	require_once dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'bootstrap'.DIRECTORY_SEPARATOR.'bootstrap.php';
+	require_once (dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'bootstrap'.DIRECTORY_SEPARATOR.'Router.php');
+	
 	use bootstrap\Router;
 
 	try
