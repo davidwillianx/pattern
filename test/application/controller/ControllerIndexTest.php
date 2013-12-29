@@ -1,6 +1,7 @@
 <?php 
 
 	use application\controller\ControllerIndex;
+	use application\view\View;
 
 	class ControllerIndexTest extends \PHPUnit_Framework_TestCase
 	{	
@@ -30,8 +31,8 @@
 
 		}
 
-		/*public function testIndex()
+		public function testIndex()
 		{
-			$this->assertTrue($this->controllerIndex->index());			
-		}*/
+			$this->assertNull($this->controllerIndex->index());
+		}
 	}?>

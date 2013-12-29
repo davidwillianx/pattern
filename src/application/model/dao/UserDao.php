@@ -19,7 +19,7 @@
 			$this->prepare();
 			$this->bindParam($user->getId());
 			$this->execute();
-			return $this->fetchAll(\PDO::FETCH_ASSOC);
+			return $this->fetch(\PDO::FETCH_ASSOC);
 		}
 	}
 ?>

@@ -59,11 +59,35 @@
 			$this->view->setStorage($storage);							
 		}
 
+		public function testSetPage()
+		{
+			$page = 'index.php';
+			$this->assertTrue(file_exists($this->view->src),
+				'File not Found path'.$this->view->src);
+			$this->assertTrue($this->view->setPage($page));
+		}
+
+		/**
+		*@expectedException RuntimeException 
+		*/
+		public function testSetPageNotWork()
+		{
+			$page = 'indddex.php';
+			$this->view->setPage($page);			
+		}
+
+		/**
+		*@depends testSetPageNotWork
+		*/
 		public function testShow()
 		{
 			$storage =	array('name' => 'somebody' ,'age' => 21);
-			$page = '';
-			$this->assertTrue($this->view->show());
-
+			$page = 'test_com_tudo_pg.php';
+			$this->view->setPage($page);
+			$this->view->setStorage($storage);
+			$this->assertNull($this->view->show());
 		}
+
+		
+
 	}?>

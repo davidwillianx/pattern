@@ -2,19 +2,20 @@
 	
 	namespace application\controller;
 
+	use application\view\View;
+
 	class ControllerIndex
 	{
 		public $model;
+		public $view;
+		public $dataStorage;
 
+		/*@TODO adicionar pagina correta*/
 		public function index()
 		{
-			/*
-				TODO another day agora aqui da pra testar 
-				o cache e outra possivel sessão deste
-			 	mesmo usuário
-			*/
-			echo 'sddasdas';
+			$this->view = new View();
 
-
+			$this->view->setPage('test_contr_index.php');
+			$this->view->show();
 		}
 	}?>
