@@ -14,7 +14,7 @@
 		public function index()
 		{
 			$this->view = new View();
-			$this->view->setPage('test_contr_index.php');
+			$this->view->setPage('index.php');
 			$this->view->show();
 		}
 	}?>
