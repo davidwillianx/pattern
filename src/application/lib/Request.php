@@ -74,6 +74,9 @@ class Request
 			return true;
 	}
 
+	/** @TODO método depreciado por conta 
+		das novas regras de banco de dados
+	*/
 	public function buildObject($isntaceObject)
 	{
 		$keys =  array_keys($this->dataRequest);
