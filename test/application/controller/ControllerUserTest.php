@@ -42,15 +42,17 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 
 	public function testRegister()
 	{
-		$data = array('Nome'=>'alonso','email'=>'test@hotmail.com','event'=>'registerUser');
+		$data = array('nome'=>'controllerUser','email'=>'cuser@hotmail.com','event'=>'registerUser');
 		$_POST = $data;
 
-		$this->assertTrue($this->controllerUser->register(),'Unexpected value:: register user');
+		$this->assertNull($this->controllerUser->register(),'Unexpected value:: register user');
 	}
 
-
-
-
-
+	public function testRegisterNotWorkWithInvalidDataRequired()
+	{
+		$data = array('nome' => null, 'email' => '','event'=>'registerUser');
+		$_POST = $data;
+		$this->assertFalse($this->controllerUser->register());
+	}
 
 }?>

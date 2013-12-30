@@ -10,7 +10,6 @@
 		public $view;
 		public $dataStorage;
 
-		/*@TODO adicionar pagina correta*/
 		public function index()
 		{
 			$this->view = new View();

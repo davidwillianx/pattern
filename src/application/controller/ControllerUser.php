@@ -1,7 +1,7 @@
 <?php 
 
 namespace application\controller;
-use application\model\User;
+use application\model\action\UserAction;
 
 class ControllerUser
 {
@@ -10,9 +10,9 @@ class ControllerUser
 	private $dataStorage;
 	private $model;
 
+	/**@TODO nome igual ao da action ::mudança */
 	public function register()
 	{
-
 		if(isset($_POST['event']) && !empty($_POST['event']))
 		{
 			$valid = true;
@@ -21,7 +21,17 @@ class ControllerUser
 
 			if($valid)
 			{
-				return true;
+				try
+				{
+					$model = new UserAction();
+					$model->register($_POST['nome'],$_POST['email']);
+
+				}catch(\RuntimeException $error)
+				{
+					/*chama uma caixa de informação dentro da tela
+						com a mensagem de $error */
+				}
+				
 				//model
 			}else return false;
 				//mensagem de erro para o usuario

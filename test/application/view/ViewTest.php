@@ -82,7 +82,7 @@
 		public function testShow()
 		{
 			$storage =	array('name' => 'somebody' ,'age' => 21);
-			$page = 'test_com_tudo_pg.php';
+			$page = 'index.php';
 			$this->view->setPage($page);
 			$this->view->setStorage($storage);
 			$this->assertNull($this->view->show());

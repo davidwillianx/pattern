@@ -68,6 +68,8 @@ class Router
 
 		$this->dataRequest['controller'] = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : 'index';
 		$this->dataRequest['action'] = !empty($_REQUEST['action']) ? $_REQUEST['action'] : 'index';	
+		echo $this->dataRequest['action'].'<br>';
+		echo $this->dataRequest['controller'];
 	}
 
 	private function buildFilePath()
