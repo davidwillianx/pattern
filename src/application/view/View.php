@@ -41,6 +41,11 @@
 
 		}
 
+		public function getStorage()
+		{
+			return $this->storage;
+		}
+
 		public function show()
 		{
 			ob_start();

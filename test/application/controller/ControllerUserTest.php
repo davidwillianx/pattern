@@ -55,4 +55,9 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($this->controllerUser->register());
 	}
 
+	public function testList()
+	{
+		$this->assertNull($this->controllerUser->showlist());
+	}
+
 }?>

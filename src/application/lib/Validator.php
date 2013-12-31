@@ -28,7 +28,7 @@ class Validator
                 break;
                 case 'cpf': $this->isCpf($element,$label);
                 break;
-                case 'cnpj':  $this->isCnpj($element,$label);
+                case 'cnpj': $this->isCnpj($element,$label);
                 break;
                 case  'rg': $this->isRg($element,$label);
                 break;
