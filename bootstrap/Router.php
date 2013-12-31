@@ -3,6 +3,7 @@
 namespace bootstrap;
 
 use application\controller;
+use application\lib\Request;
 
 class Router
 {
@@ -16,13 +17,13 @@ class Router
 			'controller' =>'',
 			'action'=> ''
 		);
-	private $dataResponse;
 	private $file;
-	private $trasac;
+	private $request;
+	private $transac;
 
 	public function __construct()
 	{
-
+		$this->request = new Request();
 	}
 
 	/**@TODO criar exceptions para as condições 
@@ -38,7 +39,7 @@ class Router
 			
 			$this->loadController();
 			return true;	
-
+									//404
 		}else throw new Exception("File not exists");
 	}
 
@@ -55,7 +56,7 @@ class Router
 				$this->fileInstance = $this->fileInstance->newInstance();
 
 				$reflectionMethod = new \ReflectionMethod($this->fileInstance,$this->dataRequest['action']);
-				$reflectionMethod->invokeArgs($this->fileInstance,array($this->trasac));
+				$reflectionMethod->invokeArgs($this->fileInstance,array($this->transac));
 			}catch(\ReflectionException $error){
 				echo 'falha de reflexao';
 			}
@@ -65,11 +66,11 @@ class Router
 
 	private function getDataRequest()
 	{
+		$controller = $this->request->getKey('controller');
+		$action = $this->request->getKey('action');
 
-		$this->dataRequest['controller'] = !empty($_REQUEST['controller']) ? $_REQUEST['controller'] : 'index';
-		$this->dataRequest['action'] = !empty($_REQUEST['action']) ? $_REQUEST['action'] : 'index';	
-		echo $this->dataRequest['action'].'<br>';
-		echo $this->dataRequest['controller'];
+		$this->dataRequest['controller'] = !empty($controller) ? $controller : 'index';
+		$this->dataRequest['action'] = !empty($action) ? $action : 'index';
 	}
 
 	private function buildFilePath()

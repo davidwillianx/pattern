@@ -11,6 +11,7 @@
 		$router->listener();
 
 	}catch(Exception $error){
+		//404 error
 		echo 'are you fucking kidding me?';
 		echo $error->getMessage();
 	}

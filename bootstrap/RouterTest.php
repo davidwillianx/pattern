@@ -4,6 +4,10 @@ use \PHPUnit_Framework_TestCase as PHPunit;
 use bootstrap\Router;
 require 'Router.php';
 
+/*Para rodar testes no Router faz-se necessario incluir a
+	lib request na class Router.php
+*/ 
+
 class RouterTest extends PHPunit
 {
 	private $router;

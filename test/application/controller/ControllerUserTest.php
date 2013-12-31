@@ -35,7 +35,7 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 		$this->assertClassHasAttribute('dataStorage',get_class($this->controllerUser));
 	}
 
-	public function testClassHasAttributeDataStorage()
+	public function testClassHasAttributeModel()
 	{
 		$this->assertClassHasAttribute('model',get_class($this->controllerUser));
 	}
