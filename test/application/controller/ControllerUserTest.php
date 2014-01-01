@@ -1,6 +1,7 @@
 <?php
 
 use application\controller\ControllerUser;
+use application\lib\Request;
 
 class ControllerUserTest extends \PHPUnit_Framework_TestCase
 {
@@ -42,12 +43,17 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 
 	public function testRegister()
 	{
-		$data = array('nome'=>'controllerUser','email'=>'cuser@hotmail.com','event'=>'registerUser');
-		$_POST = $data;
+		$request = new Request();
+		$request->set('nome','controllerUser');
+		$request->set('email','cuser@hotmail.com');
+		$request->set('event','registerUser');
 
-		$this->assertNull($this->controllerUser->register(),'Unexpected value:: register user');
+		$this->assertTrue($this->controllerUser->register($request),'Unexpected value:: register user');
 	}
 
+	/**
+	*@depends testRegister
+	*/
 	public function testRegisterNotWorkWithInvalidDataRequired()
 	{
 		$data = array('nome' => null, 'email' => '','event'=>'registerUser');

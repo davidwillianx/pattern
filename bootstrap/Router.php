@@ -56,7 +56,7 @@ class Router
 				$this->fileInstance = $this->fileInstance->newInstance();
 
 				$reflectionMethod = new \ReflectionMethod($this->fileInstance,$this->dataRequest['action']);
-				$reflectionMethod->invokeArgs($this->fileInstance,array($this->transac));
+				$reflectionMethod->invokeArgs($this->fileInstance,array($this->request));
 			}catch(\ReflectionException $error){
 				echo 'falha de reflexao';
 			}

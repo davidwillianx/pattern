@@ -3,6 +3,8 @@
 namespace application\controller;
 use application\model\action\UserAction;
 use application\view\View;
+use application\lib\Validator;
+use application\lib\Request;
 
 class ControllerUser
 {
@@ -12,24 +14,26 @@ class ControllerUser
 	private $model;
 
 	/**@TODO nome igual ao da action ::mudança */
-	public function register()
+	public function register(Request $request)
 	{
-		if(isset($_POST['event']) && !empty($_POST['event']))
+
+		if($request->isElement('event') && $request->getKey('event'))
 		{
+
 			$valid = true;
-			$valid = !empty($_POST['nome']) ? true : false;
-			$valid = !empty($_POST['email']) ? true : false;
+			$valid = $request->getKey('nome') ? true : false;
+			$valid = $request->getKey('email') ? true : false;
 
 			if($valid)
 			{
 				try
 				{
 					$model = new UserAction();
-					$model->register($_POST['nome'],$_POST['email']);
+					$model->register($request->getKey('nome'),$request->getKey('email'));
 					echo 'Cadastro Realizado com sucesso!';
+					return true;
 
-				}catch(\RuntimeException $error)
-				{
+				}catch(\RuntimeException $error){
 					/*chama uma caixa de informação dentro da tela
 						com a mensagem de $error */
 				}
@@ -59,5 +63,4 @@ class ControllerUser
 			
 		}
 	}
-
 }?>
