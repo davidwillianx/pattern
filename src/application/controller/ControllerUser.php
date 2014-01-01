@@ -16,15 +16,14 @@ class ControllerUser
 	/**@TODO nome igual ao da action ::mudança */
 	public function register(Request $request)
 	{
-
 		if($request->isElement('event') && $request->getKey('event'))
 		{
+			$validator = new Validator();
+			$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
+			$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
 
-			$valid = true;
-			$valid = $request->getKey('nome') ? true : false;
-			$valid = $request->getKey('email') ? true : false;
-
-			if($valid)
+			
+			if($validator->isValid())
 			{
 				try
 				{
@@ -40,7 +39,9 @@ class ControllerUser
 				
 				//model
 			}else return false;
-				/*mensagem de erro para o usuario e addcionar via cacheRequest 
+				/*
+					use $validator->showErros();
+				mensagem de erro para o usuario e addcionar via cacheRequest 
 				que ja foram cadastradas corretament (superFeature)*/
 		}
 	}

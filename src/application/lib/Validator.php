@@ -34,6 +34,7 @@ class Validator
                 break;
                 case 'cellphone': $this->isCellPhonneNumber($element,$label);
                 break;
+                case 'email': $this->isEmail($element,$label);
             }
         }
     }
@@ -98,7 +99,7 @@ class Validator
 
     public function isEmail($element,$label)
     {
-        $pattern = preg_match('^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$',$element );
+        $pattern = preg_match('/^([0-9a-zA-Z]+([_.-]?[0-9a-zA-Z]+)*@[0-9a-zA-Z]+[0-9,a-z,A-Z,.,-]*(.){1}[a-zA-Z]{2,4})+$/',$element );
         if(!$pattern)
         {
             $this->valid = false;

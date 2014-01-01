@@ -56,9 +56,11 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegisterNotWorkWithInvalidDataRequired()
 	{
-		$data = array('nome' => null, 'email' => '','event'=>'registerUser');
-		$_POST = $data;
-		$this->assertFalse($this->controllerUser->register());
+		$request =  new Request();
+		$request->set('nome',null);
+		$request->set('email','');
+		$request->set('event','registerUser');
+		$this->assertFalse($this->controllerUser->register($request));
 	}
 
 	public function testList()
