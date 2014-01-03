@@ -87,7 +87,21 @@
 			$this->view->setStorage($storage);
 			$this->assertNull($this->view->show());
 		}
+			
+		/**
+		*@expectedException RuntimeException 
+		*/
+		public function testShowNotWork()
+		{
+			$this->view->show();
+		}
 
-		
-
+		public function testGetStorage()
+		{
+			$storage =	array('name' => 'somebody' ,'age' => 21);
+			$page = 'users.php';
+			$this->view->setPage($page);
+			$this->view->setStorage($storage);
+			$this->assertArrayHasKey('name',$this->view->getStorage());
+		}
 	}?>

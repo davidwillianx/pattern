@@ -52,6 +52,24 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
 			);
 	}
 
+	public function testInsert()
+	{
+		$user = new User();
+		$user->setNome('anybody');
+		$user->setEmail('any@body.com.br');
+
+		$this->assertTrue($this->userDao->insert($user));
+	}
+
+	/**
+	*@expectedException InvalidArgumentException
+	*/
+	public function testInserNotWork()
+	{
+		$user = new User();
+		$this->userDao->insert($user);
+	}
+
 	private function countRowsUserTable()
 	{
 		$this->userDao->sql = 'SELECT COUNT(id) quantidade FROM user';

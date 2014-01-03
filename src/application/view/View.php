@@ -11,7 +11,7 @@
 		public $src = '';
 		
 
-		public function __construct($view = null)
+		public function __construct($view = null,$storage = null)
 		{
 
 			$this->src = dirname(dirname(dirname(__FILE__))).self::DS.
@@ -19,6 +19,9 @@
 
 			if($view != null && !empty($view))
 				$this->setPage($view);
+			
+			if($storage != null && !empty($storage))
+				$this->setStorage($storage);
 		}
 
 		public function setStorage($storage)
@@ -48,12 +51,16 @@
 
 		public function show()
 		{
-			ob_start();
+			if($this->page)
+			{
+				ob_start();
 				if(require_once($this->src.$this->page))
 					$this->content = ob_get_contents();
-			ob_end_clean();
+				ob_end_clean();
 
-			echo $this->content;
+				echo $this->content;
+			}else throw new \RuntimeException('Não existe uma página solicitada');
+			
 		}
 		
 	}?>

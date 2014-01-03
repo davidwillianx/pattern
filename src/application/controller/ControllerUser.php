@@ -29,20 +29,32 @@ class ControllerUser
 				{
 					$model = new UserAction();
 					$model->register($request->getKey('nome'),$request->getKey('email'));
-					echo 'Cadastro Realizado com sucesso!';
+					$storage  = array('message' => 'Cadastro realizado com sucesso');
+
+					$view = new View('index.php',$storage);
+					$view->show();
+
 					return true;
 
 				}catch(\RuntimeException $error){
-					/*chama uma caixa de informação dentro da tela
-						com a mensagem de $error */
+					/*
+						chama uma caixa de informação dentro da tela
+						com a mensagem de $error 
+					*/
 				}
-				
 				//model
-			}else return false;
+			}else {
+				$storage = array('message' => 'Dados inválidos');
+				$view  = new View('index.php',$storage);
+				$view->show();
+
+				return false;				
+			}
 				/*
 					use $validator->showErros();
-				mensagem de erro para o usuario e addcionar via cacheRequest 
-				que ja foram cadastradas corretament (superFeature)*/
+					mensagem de erro para o usuario e addcionar via cacheRequest 
+					que ja foram cadastradas corretament (superFeature)
+				*/
 		}
 	}
 
@@ -53,8 +65,7 @@ class ControllerUser
 			$model = new UserAction();
 			$userStorage = $model->getAll();
 
-			$view = new View('users.php');
-			$view->setStorage($userStorage);
+			$view = new View('users.php',$userStorage);
 			$view->show();
 
 		}catch(\RuntimeException $error){
@@ -64,4 +75,6 @@ class ControllerUser
 			
 		}
 	}
+
+	
 }?>
