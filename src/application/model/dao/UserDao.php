@@ -1,7 +1,7 @@
 <?php 
-	namespace application\model\dao;
-	use application\model\dao\AbstractDao;
-	use application\model\dao\IUserDao;
+namespace application\model\dao;
+use application\model\dao\AbstractDao;
+use application\model\dao\IUserDao;
 
 class UserDao extends AbstractDao implements IUserDao
 {
@@ -30,5 +30,4 @@ class UserDao extends AbstractDao implements IUserDao
 		$this->bindParam($user->getEmail());
 		return $this->execute();
 	}
-
 }?>
