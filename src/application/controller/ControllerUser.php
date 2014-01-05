@@ -12,7 +12,7 @@ class ControllerUser
 	private $view;
 	private $dataStorage;
 	private $model;
-
+ 
 	/**@TODO nome igual ao da action ::mudança */
 	public function register(Request $request)
 	{

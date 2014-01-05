@@ -13,7 +13,7 @@ class UserDao extends AbstractDao implements IUserDao
 		return $this->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function selectById($user)
+	public function selectById($user) 
 	{
 		$this->sql = 'SELECT * FROM user WHERE id = ?';
 		$this->prepare();

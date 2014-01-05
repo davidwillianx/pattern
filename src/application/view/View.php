@@ -8,7 +8,7 @@
 		private $storage;
 		private $content;
 
-		public $src = '';
+		public $src = ''; 
 		
 
 		public function __construct($view = null,$storage = null)
