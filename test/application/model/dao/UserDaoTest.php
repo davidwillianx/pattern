@@ -1,7 +1,9 @@
 <?php 
 
 use application\model\dao\UserDao;
+use application\model\dao\Dao;
 use application\model\entity\User;
+
 
 class UserDaoTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +18,8 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
   	{
-  		$this->userDao = new UserDao();
+  		$dao = new Dao();
+  		$this->userDao = new UserDao($dao);
   	}
 
   	public function testIsInstanceOfUserDao()
@@ -26,10 +29,17 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
   			);
   	}
 
+  	/**@expectedException RuntimeException*/
+  	public function testInstanceNotWork()
+  	{
+
+  	}
+
   	public function testSelectAll()
   	{
-  		$quantityRows = $this->countRowsUserTable();
-   		$this->assertCount($quantityRows,$this->userDao->selectAll(),
+
+  		$quantityRows = $this->userDao->countAll();
+   		$this->assertCount((int)$quantityRows['quantity'],$this->userDao->selectAll(),
   			'Unexpected number of responses'
   		);
   	}
@@ -64,18 +74,18 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
 	/**
 	*@expectedException InvalidArgumentException
 	*/
-	public function testInserNotWork()
+	public function testInsertNotWork()
 	{
 		$user = new User();
 		$this->userDao->insert($user);
 	}
 
-	private function countRowsUserTable()
+	/**
+	*@depends testInsertNotWork
+	*/
+	public function testClassHasAttributeDao()
 	{
-		$this->userDao->sql = 'SELECT COUNT(id) quantidade FROM user';
-		$this->userDao->prepare();
-		$this->userDao->execute();
-		$quantity =  $this->userDao->fetch(\PDO::FETCH_ASSOC);
-		return (int) $quantity['quantidade'];
+		$this->assertClassHasAttribute('dao',get_class($this->userDao),
+			'Class doesnt has attribute dao');
 	}
 }?>

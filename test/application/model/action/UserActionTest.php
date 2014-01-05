@@ -2,6 +2,7 @@
 
 use application\model\action\UserAction;
 use application\model\dao\UserDao;
+use application\model\dao\Dao;
 
 class UserActionTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +29,7 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetDao()
 	{
-		$userDao = new UserDao();
+		$userDao = new UserDao(new Dao());
 		$this->assertEquals($this->userAction->getDao(),$userDao,
 			'Unexpected type of data');
 	}
@@ -36,6 +37,11 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	public function testUserActionHasAttributeUserDao()
 	{
 		$this->assertClassHasAttribute($attributeName = 'userDao',get_class($this->userAction));
+	}
+
+	public function testUserActionHasAttributeDao()
+	{
+		$this->assertClassHasAttribute($attributeName = 'dao',get_class($this->userAction));	
 	}
 
 	/**
