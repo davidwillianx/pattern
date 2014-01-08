@@ -26,14 +26,18 @@ class UserAction
 
 	public function register($nome,$email)
 	{
+		$this->dao->beginTransaction();
 		try{
 			$user = new User();
 				$user->setNome($nome);
 				$user->setEmail($email);
-			return $this->getDao()->insert($user);
+			$registred  = $this->getDao()->insert($user);
+			$this->dao->commit();
+			return $registred;
 
 		}catch(\UnexpectedValueException $error)
 		{
+			$this->dao->rollback();
 			throw new \RuntimeException('Dados inv&aacute;lidos para realiza&ccedil&atilde; do cadastro');
 		}
 	}

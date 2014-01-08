@@ -7,6 +7,7 @@
 		public $sql;
 		private $pdoConnection;
 		private $pdoStatement;
+		private $transaction = false;
 		private $indexParam;
 		private $dataConnection = array(
 							'dns' => 'mysql:dbname=contecomtest;host=localhost'
@@ -76,13 +77,44 @@
 			return $this->getStatement()->fetchAll($patter);
 		}
 
+		public function beginTransaction()
+		{
+			if(!$this->transaction)
+			{
+				$this->transaction = true;
+				$this->getConnection()->beginTransaction();
+				return $this->transaction;
+			}else return $this->transaction = false;
+
+		}
+
+		public function commit()
+		{
+			if($this->transaction)
+			{
+				 $this->transaction = false;
+				 return $this->getConnection()->commit();
+			}else return $this->transaction;
+		}
+
+		public function rollBack()
+		{
+			if($this->transaction)
+			{
+				$this->transaction = false;
+				return $this->getConnection()->rollback();		
+			}else return $this->transaction;
+		
+		}
+
 		private function setStatement($pdoStatement)
 		{
-			$this->pdoStatement = $pdoStatement;
+			return $this->pdoStatement = $pdoStatement;
 		}
 
 		private function getStatement()
 		{
 			return $this->pdoStatement;
 		}
+
 	}?>

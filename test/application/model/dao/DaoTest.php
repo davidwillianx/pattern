@@ -67,6 +67,10 @@
 				);
 		}
 
+		public function testClassDaoHasAttributeTransaction()
+		{
+			$this->assertClassHasAttribute('transaction',get_class($this->dao));
+		}
 		
 		public function testBindParamShouldWork()
 		{
@@ -145,6 +149,34 @@
 
 			$this->assertCount((int)$quatityRows['quantidade'],$this->dao->fetchAll(),
 				'Number rows fetched <someError>');
+		}
+
+		public function testBeginTransaction()
+		{
+			$this->assertTrue($this->dao->beginTransaction());
+			$this->assertFalse($this->dao->beginTransaction());
+		}
+
+		public function testCommit()
+		{
+			$this->dao->beginTransaction();
+			$this->assertTrue($this->dao->commit());
+		}
+
+		public function testCommitNotWork()
+		{
+			$this->assertFalse($this->dao->commit());			
+		}
+
+		public function testRollBack()
+		{
+			$this->dao->beginTransaction();
+			$this->assertTrue($this->dao->rollback());
+		}
+
+		public function testRollBackNotWork()
+		{
+			$this->assertFalse($this->dao->rollBack());
 		}
      
 		/*public function testFetchFromClassPatter()
