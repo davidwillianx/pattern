@@ -42,7 +42,7 @@
 		public function testIsInsTanceOfUser()
 		{
 			$this->assertInstanceOf('application\model\entity\User',$this->user,
-					' Is not Istance of User'
+					' Is not Instance of User'
 				);
 		}
 
