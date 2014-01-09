@@ -21,6 +21,7 @@ class ControllerUser
 			$validator = new Validator();
 			$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
 			$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
+			$validator->setElementCondition($request->getKey('idade'),'idade','required;isNumber;');
 
 			
 			if($validator->isValid())
@@ -28,9 +29,8 @@ class ControllerUser
 				try
 				{
 					$model = new UserAction();
-					$model->register($request->getKey('nome'),$request->getKey('email'));
+					$model->register($request);
 					$storage  = array('message' => 'Cadastro realizado com sucesso');
-
 					$view = new View('index.php',$storage);
 					$view->show();
 

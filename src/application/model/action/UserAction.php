@@ -4,6 +4,8 @@ namespace application\model\action;
 use application\model\dao\UserDao;
 use application\model\dao\Dao;
 use application\model\entity\User;
+use application\model\action\PessoaAction;
+use application\lib\Request;
 
 class UserAction
 {
@@ -24,16 +26,21 @@ class UserAction
 		return $this->userDao;
 	}
 
-	public function register($nome,$email)
+	public function register(Request $request)
 	{
 		$this->dao->beginTransaction();
 		try{
 			$user = new User();
-				$user->setNome($nome);
-				$user->setEmail($email);
-			$registred  = $this->getDao()->insert($user);
+				$user->setNome($request->getKey('nome'));
+				$user->setEmail($request->getKey('email'));
+			 $this->getDao()->insert($user);
+
+			 $pessoaAction = new PessoaAction($this->dao);
+			 $pessoaAction->register($request);
+
+
 			$this->dao->commit();
-			return $registred;
+			return true;
 
 		}catch(\UnexpectedValueException $error)
 		{

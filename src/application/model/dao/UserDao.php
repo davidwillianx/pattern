@@ -1,12 +1,13 @@
 <?php 
 namespace application\model\dao;
 use application\model\dao\IUserDao;
+use application\model\dao\Dao;
 
 class UserDao implements IUserDao
 {
 	private $dao;
 
-	public function __construct($dao)
+	public function __construct(Dao $dao)
 	{
 		if($dao)
 			$this->dao = $dao;

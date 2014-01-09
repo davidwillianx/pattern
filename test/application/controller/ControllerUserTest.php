@@ -46,6 +46,7 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 		$request = new Request();
 		$request->set('nome','controllerUser');
 		$request->set('email','cuser@hotmail.com');
+		$request->set('idade',8);
 		$request->set('event','registerUser');
 
 		$this->assertTrue($this->controllerUser->register($request),'Unexpected value:: register user');

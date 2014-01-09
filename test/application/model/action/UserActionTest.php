@@ -3,6 +3,7 @@
 use application\model\action\UserAction;
 use application\model\dao\UserDao;
 use application\model\dao\Dao;
+use application\lib\Request;
 
 class UserActionTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,7 +51,9 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegisterNotWork()
 	{
-		$this->assertTrue($this->userAction->register('',''));
+		$_POST = null;
+		$request = new Request();
+		$this->assertTrue($this->userAction->register($request));
 	}
 
 	/**
@@ -58,9 +61,13 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegister()
 	{
-		$name = 'Alonso';
-		$email = 'al@ig.com.br';
-		$this->assertTrue($this->userAction->register($name,$email));
+		$_POST = null;
+		$request = new Request();
+		$request->set('nome','Alonso');
+		$request->set('email','al@ig.com.br');
+		$request->set('idade',22);
+
+		$this->assertTrue($this->userAction->register($request));
 	}
 
 	public function testGetAll()
