@@ -44,7 +44,7 @@ class PessoaTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testSetNomeNotWork()
 	{
-		$this->pessoa->setNome('');
+		$this->pessoa->setNome(null);
 	}
 
 	public function testSetIdade()

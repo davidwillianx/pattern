@@ -21,6 +21,14 @@ class PessoaDaoTest extends \PHPUnit_Framework_TestCase
 		$this->pessoaDao = new PessoaDao($dao);
 	}
 
+	public function tearDown()
+	{
+		$dao =  new Dao();
+		$dao->sql = 'TRUNCATE pessoa';
+		$dao->prepare();
+		$dao->execute();
+	}
+
 	public function testInstanceOfPessoaDao()
 	{
 		$this->assertInstanceOf('application\model\dao\PessoaDao', $this->pessoaDao);
@@ -34,4 +42,6 @@ class PessoaDaoTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($this->pessoaDao->insert($pessoa));
 	}
+
+
 }?>

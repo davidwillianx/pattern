@@ -22,6 +22,14 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
   		$this->userDao = new UserDao($dao);
   	}
 
+  	public function tearDown()
+	{
+		$dao =  new Dao();
+		$dao->sql = 'TRUNCATE user';
+		$dao->prepare();
+		$dao->execute();
+	}
+
   	public function testIsInstanceOfUserDao()
   	{
   		$this->assertInstanceOf('application\model\dao\UserDao',$this->userDao,
@@ -29,12 +37,18 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
   			);
   	}
 
-  	/**@expectedException RuntimeException*/
-  	public function testInstanceNotWork()
-  	{
+  	public function testInsert()
+	{
+		$user = new User();
+		$user->setNome('anybody');
+		$user->setEmail('any@body.com.br');
 
-  	}
+		$this->assertTrue($this->userDao->insert($user));
+	}
 
+	/**
+	*@depends testInsert
+	*/
   	public function testSelectAll()
   	{
 
@@ -49,26 +63,16 @@ class UserDaoTest extends \PHPUnit_Framework_TestCase
   	*/
 	public function testSelectById()
 	{
-		/*$userMock = $this->getMock('application\mode\entity\User');
-		$userMock->expects($this->any())
-				 ->method('getId')
-				 ->will($this->returnValue(1));*/
 		$user = new User();
 		$user->setId(1);
+		$user->setNome('anybody');
+		$user->setEmail('any@body.com.br');
+		$this->userDao->insert($user);
 
 		$userRow = $this->userDao->selectById($user);
 		$this->assertCount(3,$userRow,
 				'unexpected number of values'
 			);
-	}
-
-	public function testInsert()
-	{
-		$user = new User();
-		$user->setNome('anybody');
-		$user->setEmail('any@body.com.br');
-
-		$this->assertTrue($this->userDao->insert($user));
 	}
 
 	/**

@@ -22,6 +22,14 @@
 			$this->dao = new Dao($this->dataConnection);
 		}
 
+		public function tearDown()
+		{
+			$dao =  new Dao();
+			$dao->sql = 'TRUNCATE user';
+			$dao->prepare();
+			$dao->execute();
+		}
+
 		/**
 		*@expectedException Exception
 		*@expectedExceptionMessage Connection Failed
@@ -92,13 +100,9 @@
 
 		public function testExecuteLastId()
 		{
-			$userRow = $this->checkLastInserted();
-			$lastId = $userRow['id'];
-			$this->dao->sql = 'INSERT INTO user (nome,email)
-										VALUES("Estroncio","e@hotmailcom")';
-			$this->dao->prepare();
-			$idInsert = $this->dao->executeLastId();
-			$this->assertEquals(++$lastId,$idInsert);
+			$lastId = 1;
+			$idInsert = $this->insertUser();
+			$this->assertEquals($lastId,$idInsert);
 		}
 
 		/**
@@ -113,11 +117,12 @@
 
 		
 		/**
-		*@depends testExecute
+		*@depends testExecuteLastId
 		*/
 		public function testFetch()
 		{
 			$id = 1;
+			$this->insertUser();
 			$this->executeFromFetch($id);
 			$this->assertCount(3,$this->dao->fetch(\PDO::FETCH_ASSOC),
 					'Expected 1 element(s)'
@@ -129,9 +134,7 @@
 		*/
 		public function testFetchNotFoundResult()
 		{
-			$userRow = $this->checkLastInserted();
-			$lastId = $userRow['id'];
-			$this->executeFromFetch(++$lastId);
+			$this->executeFromFetch(1);
 			$this->assertFalse($this->dao->fetch(\PDO::FETCH_ASSOC),
 					'Unexpected elements found from this sentence'
 				);
@@ -201,19 +204,21 @@
 			$this->dao->execute();
 		}
 
-		private function checkLastInserted()
-		{
-			$this->dao->sql = 'SELECT MAX(id) as id FROM user';
-			$this->dao->prepare();
-			$this->dao->execute();
-			return $this->dao->fetch(\PDO::FETCH_ASSOC);
-		}
-
 		private function countRowsUserTable()
 		{
 			$this->dao->sql = 'SELECT COUNT(id) quantidade FROM user';
 			$this->dao->prepare();
 			$this->dao->execute();
 			return $this->dao->fetch(\PDO::FETCH_ASSOC);
+		}
+
+		private function insertUser()
+		{
+			$this->dao->sql = 'INSERT INTO user(nome,email) VALUES (?, ?)';
+			$this->dao->prepare();
+			$this->dao->bindParam('dwlopes');
+			$this->dao->bindParam('ss@hotmail.com');
+
+			return $this->dao->executeLastId();
 		}
 	}?>

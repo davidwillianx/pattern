@@ -42,10 +42,11 @@ class UserAction
 			$this->dao->commit();
 			return true;
 
-		}catch(\UnexpectedValueException $error)
-		{
+		}catch(\UnexpectedValueException $error){
 			$this->dao->rollback();
 			throw new \RuntimeException('Dados inv&aacute;lidos para realiza&ccedil&atilde; do cadastro');
+		}catch(\OverflowException $error){
+			throw new \RuntimeException("Error Processing Request");
 		}
 	}
 

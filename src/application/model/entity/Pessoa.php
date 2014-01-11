@@ -7,7 +7,6 @@ class Pessoa
 	private $nome;
 	private $idade;
 
-
 	public function setNome($nome)
 	{
 		if(!$nome)

@@ -19,6 +19,7 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->userAction = new UserAction();
+		$_POST = null;
 		
 	}
 
@@ -51,7 +52,6 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegisterNotWork()
 	{
-		$_POST = null;
 		$request = new Request();
 		$this->assertTrue($this->userAction->register($request));
 	}
@@ -61,14 +61,23 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegister()
 	{
-		$_POST = null;
 		$request = new Request();
-		$request->set('nome','Alonso');
+		$request->set('nome','registUserAndPessoa');
 		$request->set('email','al@ig.com.br');
 		$request->set('idade',22);
 
 		$this->assertTrue($this->userAction->register($request));
 	}
+
+	
+	// public function testRegisterNotWorkToTestTransactionCondition()
+	// {
+	// 	$request = new Request();
+	// 	$request->set('nome','TomTom');
+	// 	$request->set('email','tom@ig.com.br');
+	// 	// $request->set('idade',22);
+	// 	$this->userAction->register($request);
+	// }
 
 	public function testGetAll()
 	{

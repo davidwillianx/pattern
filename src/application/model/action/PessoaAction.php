@@ -33,13 +33,13 @@ class PessoaAction
 			$pessoa->setIdade($request->getKey('idade'));
 
 			return $this->getDao()->insert($pessoa);	
-		}catch(\InvalidArgumentException $error)
-		{
+
+		}catch(\InvalidArgumentException $error){
 			throw new \RuntimeException("Dados inv&aacute;lidos");
-		}catch(\Exception $error)
-		{
+
+		}catch(\Exception $error){
 			throw new \RuntimeException("Problema na conexão");
+
 		}
-		
 	}
 }?>
