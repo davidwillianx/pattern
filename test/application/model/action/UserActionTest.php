@@ -23,6 +23,12 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 		
 	}
 
+	public function tearDown()
+	{
+		$this->userAction = null;
+		$_POST = null;
+	}
+
 	public function testIsInstanceOfUserAction()
 	{
 		$this->assertInstanceOf('application\model\action\UserAction',$this->userAction,
@@ -69,20 +75,25 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->userAction->register($request));
 	}
 
-	
-	// public function testRegisterNotWorkToTestTransactionCondition()
-	// {
-	// 	$request = new Request();
-	// 	$request->set('nome','TomTom');
-	// 	$request->set('email','tom@ig.com.br');
-	// 	// $request->set('idade',22);
-	// 	$this->userAction->register($request);
-	// }
-
 	public function testGetAll()
 	{
 		$users = $this->userAction->getAll();
 		$this->assertArrayHasKey(0,$users);
 		$this->assertCount(3,$users['0']);
 	}
+
+	/**
+	*@depends testRegister
+	*@expectedException RuntimeException
+	*/
+	public function testRegisterNotWorkToTestTransactionCondition()
+	{
+		$request = new Request();
+		$request->set('nome','TomTom');
+		$request->set('email','tom@ig.com.br');
+		//$request->set('idade',22);
+		$this->userAction->register($request);
+	}
+
+	
 }?>

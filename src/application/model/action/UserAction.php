@@ -38,7 +38,6 @@ class UserAction
 			 $pessoaAction = new PessoaAction($this->dao);
 			 $pessoaAction->register($request);
 
-
 			$this->dao->commit();
 			return true;
 
@@ -46,6 +45,7 @@ class UserAction
 			$this->dao->rollback();
 			throw new \RuntimeException('Dados inv&aacute;lidos para realiza&ccedil&atilde; do cadastro');
 		}catch(\OverflowException $error){
+			$this->dao->rollback();
 			throw new \RuntimeException("Error Processing Request");
 		}
 	}
