@@ -54,7 +54,11 @@ class UserAction
 	{
 		try
 		{
-			return $this->getDao()->selectAll();
+			 $usersList = $this->getDao()->selectAll();
+
+			 if(!$usersList)
+			 	throw new \RuntimeException("Not found elements");
+			 return $usersList;	
 
 		}catch(\InvalidArgumentException $error)
 		{

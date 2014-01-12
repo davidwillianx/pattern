@@ -67,16 +67,12 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testRegister()
 	{
-		$request = new Request();
-		$request->set('nome','registUserAndPessoa');
-		$request->set('email','al@ig.com.br');
-		$request->set('idade',22);
-
-		$this->assertTrue($this->userAction->register($request));
+		$this->assertTrue($this->register());
 	}
 
 	public function testGetAll()
 	{
+		$this->register();
 		$users = $this->userAction->getAll();
 		$this->assertArrayHasKey(0,$users);
 		$this->assertCount(3,$users['0']);
@@ -93,6 +89,16 @@ class UserActionTest extends \PHPUnit_Framework_TestCase
 		$request->set('email','tom@ig.com.br');
 		//$request->set('idade',22);
 		$this->userAction->register($request);
+	}
+
+	public function register()
+	{
+		$request = new Request();
+		$request->set('nome','registUserAndPessoa');
+		$request->set('email','al@ig.com.br');
+		$request->set('idade',22);
+
+		return $this->userAction->register($request);
 	}
 
 	

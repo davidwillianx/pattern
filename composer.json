@@ -11,7 +11,8 @@
     "require": {
         "phpunit/phpunit": "3.7.*@dev",
         "phpunit/phpunit-mock-objects": "1.2.3",
-        "twig/twig": "1.15.*@dev"
+        "twig/twig": "1.15.*@dev",
+        "sebastian/phpcpd": "2.0.*@dev"
     },
     "autoload":{
         "psr-0":{

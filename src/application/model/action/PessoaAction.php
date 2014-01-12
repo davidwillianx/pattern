@@ -27,17 +27,21 @@ class PessoaAction
 
 	public function register($request)
 	{
+		$this->dao->beginTransaction();
 		try{
 			$pessoa = new Pessoa();
 			$pessoa->setNome($request->getKey('nome'));
 			$pessoa->setIdade($request->getKey('idade'));
 
-			return $this->getDao()->insert($pessoa);	
+			$isInserted = $this->getDao()->insert($pessoa);	
+			return $this->dao->commit();
 
 		}catch(\InvalidArgumentException $error){
+			$this->dao->rollBack();
 			throw new \RuntimeException("Dados inv&aacute;lidos");
 
 		}catch(\Exception $error){
+			$this->dao->rollBack();
 			throw new \RuntimeException("Problema na conexão");
 
 		}
