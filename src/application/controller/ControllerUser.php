@@ -3,7 +3,6 @@
 namespace application\controller;
 use application\model\action\UserAction;
 use application\view\View;
-// use application\exceptions\ValidatorException;
 use application\lib\Validator;
 use application\lib\Request;
 
@@ -13,6 +12,12 @@ class ControllerUser
 	private $view;
 	private $dataStorage;
 	private $model;
+
+	public function laucher($page,$storage)
+	{
+		$view = new View($page,$storage);
+		$view->show();
+	}
  
 	/**@TODO nome igual ao da action ::mudança */
 	public function register(Request $request)
@@ -21,46 +26,34 @@ class ControllerUser
 		{
 			try
 			{
-				$validator = new Validator();
-				$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
-				$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
-				$validator->setElementCondition($request->getKey('idade'),'idade','required;isNumber;');
-				
-				$validator->isValid();
+				$this->validateDataFromRegister($request);
 				
 				$model = new UserAction();
 				$model->register($request);
-				$storage  = array('message' => 'Cadastro realizado com sucesso');
-				$view = new View('index.php',$storage);
-				$view->show();
+				$this->laucher('index.php',array('message','Cadastro realizado com sucesso'))
 
 				return true;
 
 			}catch(\RuntimeException $error){
-
-				$storage = array('message' => 'Dados inválidos');
-				$view  = new View('index.php',$error->getMessage());
-				$view->show();
+				$this->laucher('index.php',array('message' => $error->getMessage()));
 				return false;
-				/*
-					chama uma caixa de informação dentro da tela
-					com a mensagem de $error 
-				*/
+
 			}catch(\UnexpectedValueException $error)
 			{
-				$storage = array('message' => 'Dados inválidos');
-				$view  = new View('index.php',$error->getMessage());
-				$view->show();
-
+				$this->laucher('index.php',array('message' => $error->getMessage()));
 				return  false;				
 			}
-			//model
-			/*
-				use $validator->showErros();
-				mensagem de erro para o usuario e addcionar via cacheRequest 
-				que ja foram cadastradas corretament (superFeature)
-			*/
 		}
+	}
+
+	private function validateDataFromRegister($request)
+	{
+		$validator = new Validator();
+		$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
+		$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
+		$validator->setElementCondition($request->getKey('idade'),'idade','required;isNumber;');
+		
+		$validator->isValid();
 	}
 
 	public function showlist()
@@ -69,15 +62,13 @@ class ControllerUser
 		{	
 			$model = new UserAction();
 			$userStorage = $model->getAll();
-
-			$view = new View('users.php',$userStorage);
-			$view->show();
+			$this->laucher('users.php',$userStorage)
 
 		}catch(\RuntimeException $error){
-			/*chama uma caixa de informação dentro da tela
-						com a mensagem de $error */
+			$this->laucher('index.php',$error->getMessage());
+
 		}catch(\InvalidArgumentException $error){
-			
+			$this->laucher('index.php',$error->getMessage());					
 		}
 	}
 }?>

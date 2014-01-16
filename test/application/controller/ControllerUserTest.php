@@ -2,6 +2,7 @@
 
 use application\controller\ControllerUser;
 use application\lib\Request;
+use application\view\View;
 
 class ControllerUserTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,6 +19,11 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->controllerUser = new ControllerUser();
+	}
+
+	public function tearDown()
+	{
+		$_POST = null;
 	}
 
 	public function testIsIntanceOfControllerUser()
@@ -68,5 +74,22 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->assertNull($this->controllerUser->showlist());
 	}
+
+	public function testLaucher()
+	{
+		$page = 'index.php';
+		$storage = array('message'=>'cadastrado com sucesso');
+		$this->controllerUser->laucher($page,$storage);	
+	}
+
+	/**
+	*@expectedException RuntimeException
+	*/
+	public function testLaucherNotWork()
+	{
+		$this->controllerUser->laucher(null, null);
+	}
+
+
 
 }?>
