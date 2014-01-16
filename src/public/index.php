@@ -21,6 +21,7 @@
 	<form method="post" action="user/register"> 
 		Nome: <input type="text" name="nome" />
 		Email: <input type="text" name="email" />
+		Idade: <input type="text" name="idade" />
 		<input type="submit" name="event" value="registrar">
 	</form>
 

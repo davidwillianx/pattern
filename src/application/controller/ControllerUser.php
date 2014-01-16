@@ -3,6 +3,7 @@
 namespace application\controller;
 use application\model\action\UserAction;
 use application\view\View;
+// use application\exceptions\ValidatorException;
 use application\lib\Validator;
 use application\lib\Request;
 
@@ -18,43 +19,47 @@ class ControllerUser
 	{
 		if($request->isElement('event') && $request->getKey('event'))
 		{
-			$validator = new Validator();
-			$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
-			$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
-			$validator->setElementCondition($request->getKey('idade'),'idade','required;isNumber;');
-
-			
-			if($validator->isValid())
+			try
 			{
-				try
-				{
-					$model = new UserAction();
-					$model->register($request);
-					$storage  = array('message' => 'Cadastro realizado com sucesso');
-					$view = new View('index.php',$storage);
-					$view->show();
-
-					return true;
-
-				}catch(\RuntimeException $error){
-					/*
-						chama uma caixa de informação dentro da tela
-						com a mensagem de $error 
-					*/
-				}
-				//model
-			}else {
-				$storage = array('message' => 'Dados inválidos');
-				$view  = new View('index.php',$storage);
+				$validator = new Validator();
+				$validator->setElementCondition($request->getKey('nome'),'Nome','required;');
+				$validator->setElementCondition($request->getKey('email'),'Email','required;email;');
+				$validator->setElementCondition($request->getKey('idade'),'idade','required;isNumber;');
+				
+				$validator->isValid();
+				
+				$model = new UserAction();
+				$model->register($request);
+				$storage  = array('message' => 'Cadastro realizado com sucesso');
+				$view = new View('index.php',$storage);
 				$view->show();
 
-				return false;				
-			}
+				return true;
+
+			}catch(\RuntimeException $error){
+
+				$storage = array('message' => 'Dados inválidos');
+				$view  = new View('index.php',$error->getMessage());
+				$view->show();
+				return false;
 				/*
-					use $validator->showErros();
-					mensagem de erro para o usuario e addcionar via cacheRequest 
-					que ja foram cadastradas corretament (superFeature)
+					chama uma caixa de informação dentro da tela
+					com a mensagem de $error 
 				*/
+			}catch(\UnexpectedValueException $error)
+			{
+				$storage = array('message' => 'Dados inválidos');
+				$view  = new View('index.php',$error->getMessage());
+				$view->show();
+
+				return  false;				
+			}
+			//model
+			/*
+				use $validator->showErros();
+				mensagem de erro para o usuario e addcionar via cacheRequest 
+				que ja foram cadastradas corretament (superFeature)
+			*/
 		}
 	}
 
@@ -75,6 +80,4 @@ class ControllerUser
 			
 		}
 	}
-
-	
 }?>

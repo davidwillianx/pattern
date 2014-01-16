@@ -1,7 +1,7 @@
 <?php
 
 namespace application\lib;
-
+use application\exceptions\ValidatorException;
 
 class Validator
 {
@@ -11,6 +11,7 @@ class Validator
 
     private $erros = array();
     private $valid = true;
+    private $message = '';
 
     public function setElementCondition($element,$label,$stringConditions)
     {
@@ -167,9 +168,11 @@ class Validator
 
     public function isValid()
     {
+        $message = $this->showErros();
+
         if($this->valid)
-                return true;
-        return false;
+            return true;
+        else throw new \UnexpectedValueException($message);
     }
 
     private function failure($label)
@@ -181,13 +184,15 @@ class Validator
     public function showErros()
     {
         $fails = $this->getErros();
-     
+        $this->message .= '<div>';
+
         if(isset($fails))
         {
-    		echo '<div>';
             foreach ($fails as $fail)
-                    echo $fail.'<br>';
-            echo '</div>';
+                    $this->messge .= $fail.'<br>';
         }
+        $this->message  .= '</div>';
+
+        return $this->message;
     }
 }?>

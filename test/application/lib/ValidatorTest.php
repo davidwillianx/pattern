@@ -35,4 +35,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->validator->isValid());
 	}
 
+	/**
+	*@depends testSetElementConditionToRequired
+	*@expectedException UnexpectedValueException
+	*/
+	public function testSetElementConditionToRequiredAndThrowException()
+	{	
+		$name = null;
+		$this->validator->setElementCondition($name,'Nome','required');
+		$this->validator->isValid();
+		// $this->setExpectedException('\application\exceptions\ValidatorException');
+	}
 }?>
