@@ -4,6 +4,7 @@ namespace application\controller;
 use application\model\action\UserAction;
 use application\view\View;
 use application\lib\Validator;
+use application\lib\Response;
 use application\lib\Request;
 
 class ControllerUser
@@ -13,10 +14,10 @@ class ControllerUser
 	private $dataStorage;
 	private $model;
 
-	public function laucher($page,$storage)
+	public function launcher($view,$storage)
 	{
-		$view = new View($page,$storage);
-		$view->show();
+		$response  = new Response($view,$storage);
+		$response->show();
 	}
  
 	/**@TODO nome igual ao da action ::mudança */
@@ -30,17 +31,17 @@ class ControllerUser
 				
 				$model = new UserAction();
 				$model->register($request);
-				$this->laucher('index.php',array('message','Cadastro realizado com sucesso'))
+				$this->launcher('index.php',array('message','Cadastro realizado com sucesso'));
 
 				return true;
 
 			}catch(\RuntimeException $error){
-				$this->laucher('index.php',array('message' => $error->getMessage()));
+				$this->launcher('index.php',array('message' => $error->getMessage()));
 				return false;
 
 			}catch(\UnexpectedValueException $error)
 			{
-				$this->laucher('index.php',array('message' => $error->getMessage()));
+				$this->launcher('index.php',array('message' => $error->getMessage()));
 				return  false;				
 			}
 		}
@@ -62,13 +63,13 @@ class ControllerUser
 		{	
 			$model = new UserAction();
 			$userStorage = $model->getAll();
-			$this->laucher('users.php',$userStorage)
+			$this->launcher('users.php',$userStorage);
 
 		}catch(\RuntimeException $error){
-			$this->laucher('index.php',$error->getMessage());
+			$this->launcher('index.php',array('message'=>$error->getMessage()));
 
 		}catch(\InvalidArgumentException $error){
-			$this->laucher('index.php',$error->getMessage());					
+			$this->launcher('index.php',array('message'=>$error->getMessage()));					
 		}
 	}
 }?>

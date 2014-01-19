@@ -79,7 +79,7 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 	{
 		$page = 'index.php';
 		$storage = array('message'=>'cadastrado com sucesso');
-		$this->controllerUser->laucher($page,$storage);	
+		$this->controllerUser->launcher($page,$storage);	
 	}
 
 	/**
@@ -87,7 +87,7 @@ class ControllerUserTest extends \PHPUnit_Framework_TestCase
 	*/
 	public function testLaucherNotWork()
 	{
-		$this->controllerUser->laucher(null, null);
+		$this->controllerUser->launcher(null, null);
 	}
 
 
