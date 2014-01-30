@@ -8,7 +8,7 @@ class DaoTest extends \PHPUnit_Framework_TestCase
 	private $dataConnection = array(
 						'dns' => 'mysql:dbname=contecomtest;host=localhost'
 						,'user' =>'root'
-						,'passwd' =>'');
+						,'passwd' =>'dbdev');
 
 	public function assertPreConditions()
 	{

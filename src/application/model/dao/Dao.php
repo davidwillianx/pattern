@@ -12,7 +12,7 @@
 		private $dataConnection = array(
 							'dns' => 'mysql:dbname=contecomtest;host=localhost'
 							,'user'=>'root'
-							,'passwd'=>'');
+							,'passwd'=>'dbdev');
 		
 
 		public function __construct($dataConnection = null)

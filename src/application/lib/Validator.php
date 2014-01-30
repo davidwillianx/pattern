@@ -189,7 +189,7 @@ class Validator
         if(isset($fails))
         {
             foreach ($fails as $fail)
-                    $this->messge .= $fail.'<br>';
+                    $this->message .= $fail.'<br>';
         }
         $this->message  .= '</div>';
 

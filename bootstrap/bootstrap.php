@@ -10,5 +10,5 @@
 	$autoloadPath = $path.ds.'vendor'.ds.'autoload.php';
 
 	if(!@require_once($autoloadPath))
-		echo 'Autoload path incorrect or vendor not found, plz install compser :: son of bitch!';
+		echo 'Autoload path incorrect or vendor not found, plz install compser :: you SHALL NOT PASS!';
 ?>

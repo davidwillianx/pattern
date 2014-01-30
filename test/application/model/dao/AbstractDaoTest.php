@@ -8,7 +8,7 @@
 		private $dataConnection = array(
 							'dns' => 'mysql:dbname=contecomtest;host=localhost'
 							,'user' =>'root'
-							,'passwd' =>'');
+							,'passwd' =>'dbdev');
 
 		public function assertPreConditions()
 		{
@@ -22,6 +22,12 @@
 			$this->abstractDao = new AbstractDao($this->dataConnection);
 		}
 
+		public function tearDown()
+		{
+			$this->abstractDao = null;
+			$this->clearTableUser();
+		}
+
 		/**
 		*@expectedException Exception
 		*@expectedExceptionMessage Connection Failed
@@ -31,7 +37,7 @@
 			$dataConnection = array(
 							'dns' => 'mysql:dbname=undefined;host=localhost'
 							,'user' =>'root'
-							,'passwd' =>'');
+							,'passwd' =>'dbdev');
 
 			$abstractDao =  new AbstractDao($dataConnection);
 		}
@@ -88,13 +94,11 @@
 
 		public function testExecuteLastId()
 		{
-			$userRow = $this->checkLastInserted();
-			$lastId = $userRow['id'];
 			$this->abstractDao->sql = 'INSERT INTO user (nome,email)
 										VALUES("Estroncio","e@hotmailcom")';
 			$this->abstractDao->prepare();
 			$idInsert = $this->abstractDao->executeLastId();
-			$this->assertEquals(++$lastId,$idInsert);
+			$this->assertEquals(1,$idInsert);
 		}
 
 		/**
@@ -114,6 +118,7 @@
 		public function testFetch()
 		{
 			$id = 1;
+			$this->insertUser();
 			$this->executeFromFetch($id);
 			$this->assertCount(3,$this->abstractDao->fetch(\PDO::FETCH_ASSOC),
 					'Expected 1 element(s)'
@@ -125,9 +130,8 @@
 		*/
 		public function testFetchNotFoundResult()
 		{
-			$userRow = $this->checkLastInserted();
-			$lastId = $userRow['id'];
-			$this->executeFromFetch(++$lastId);
+			$this->prepareQuery();
+			$this->abstractDao->bindParam(1);
 			$this->assertFalse($this->abstractDao->fetch(\PDO::FETCH_ASSOC),
 					'Unexpected elements found from this sentence'
 				);
@@ -138,50 +142,38 @@
 		*/
 		public function testFetchAll()
 		{
-			$quatityRows = $this->countRowsUserTable();
+			$this->insertUser();
 			$this->abstractDao->sql = 'SELECT * FROM user';
 			$this->abstractDao->prepare();
 			$this->abstractDao->execute();
 
-			$this->assertCount((int)$quatityRows['quantidade'],$this->abstractDao->fetchAll(),
+			$this->assertCount(1,$this->abstractDao->fetchAll(),
 				'Number rows fetched <someError>');
 		}
      
-		/*public function testFetchFromClassPatter()
-		{
-			$id = 1;
-			$this->executeFromFetch($id);
-			$this->assertInstanceOf('stdClass',$this->abstractDao->fetch(PDO::FETCH_CLASS));
-		}*/
-
 		private function prepareQuery()
 		{
 			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
 			$this->abstractDao->prepare();
 		}
 
-		
-		private function executeFromFetch($id)
+		private function clearTableUser()
 		{
-			$this->abstractDao->sql = 'SELECT * FROM user WHERE id = ?';
+			$this->abstractDao = new AbstractDao($this->dataConnection);
+			$this->abstractDao->sql = 'TRUNCATE user';
 			$this->abstractDao->prepare();
-			$this->abstractDao->bindParam($id,\PDO::PARAM_INT);
 			$this->abstractDao->execute();
 		}
 
-		private function checkLastInserted()
+		public function insertUser()
 		{
-			$this->abstractDao->sql = 'SELECT MAX(id) as id FROM user';
+			$this->abstractDao = new AbstractDao($this->dataConnection);
+			$this->abstractDao->sql = 'INSERT INTO user (nome,email) VALUES(?,?)';
 			$this->abstractDao->prepare();
+			$this->abstractDao->bindParam('popie');
+			$this->abstractDao->bindParam('popie@hotmail.com');
+			
 			$this->abstractDao->execute();
-			return $this->abstractDao->fetch(\PDO::FETCH_ASSOC);
 		}
 
-		private function countRowsUserTable()
-		{
-			$this->abstractDao->sql = 'SELECT COUNT(id) quantidade FROM user';
-			$this->abstractDao->prepare();
-			$this->abstractDao->execute();
-			return $this->abstractDao->fetch(\PDO::FETCH_ASSOC);
-		}
 	}?>
