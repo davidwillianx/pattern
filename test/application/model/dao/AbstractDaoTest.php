@@ -117,9 +117,10 @@
 		*/
 		public function testFetch()
 		{
-			$id = 1;
 			$this->insertUser();
-			$this->executeFromFetch($id);
+			$this->prepareQuery();
+			$this->abstractDao->bindParam(1,\PDO::PARAM_INT);
+			$this->abstractDao->execute();
 			$this->assertCount(3,$this->abstractDao->fetch(\PDO::FETCH_ASSOC),
 					'Expected 1 element(s)'
 				);
